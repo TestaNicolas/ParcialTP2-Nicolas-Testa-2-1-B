@@ -1,23 +1,17 @@
 import express from 'express'
-import RouterNotas from './router/notas.js'
+import RouterNumeros from './router/numeros.js'
 
 const app = express()
+const PORT = 8080
 
+// APP USE
 app.use(express.static('public'))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-const routerNotas = new RouterNotas()
+// RUTAS
+app.use('/numeros', new RouterNumeros().OnInit())
 
-/* ------------------------------------------------------------- */
-/*             ZONA DE RUTAS MANEJADAS POR EL ROUTER             */
-/* ------------------------------------------------------------- */
-app.use('/api/notas', routerNotas.start())
-
-/* ------------------------------------------------------------- */
-/*                      Servidor LISTEN                          */
-/* ------------------------------------------------------------- */
-const PORT = 8080
-const server = app.listen(PORT, 
-    () => console.log(`Servidor express escuchando en http://localhost:${PORT}`)
-)
-server.on('error', error => console.log('Servidor express en error:', error) )
+// APP LISTEN
+const server = app.listen(PORT, () => console.log(`Servidor escuchado en el puerto ... ${PORT}`))
+server.on('error', error => console.log('Error al levantar el servidor:', error) )
